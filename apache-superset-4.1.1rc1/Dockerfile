@@ -58,13 +58,12 @@ ENV LANG=C.UTF-8 \
     SUPERSET_HOME="/app/superset_home" \
     SUPERSET_PORT=8088
 
-RUN mkdir -p ${PYTHONPATH} \
+RUN mkdir -p ${PYTHONPATH} superset/static requirements superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
     && apt-get update -qq && apt-get install -yqq --no-install-recommends \
     build-essential \
     curl \
-    default-lib \
-    mysqlclient-dev \
+    default-libmysqlclient-dev \
     libsasl2-dev \
     libsasl2-modules-gssapi-mit \
     libpq-dev \
