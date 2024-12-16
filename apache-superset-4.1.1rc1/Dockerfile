@@ -63,7 +63,8 @@ RUN mkdir -p ${PYTHONPATH} superset/static requirements superset-frontend apache
     && apt-get update -qq && apt-get install -yqq --no-install-recommends \
     build-essential \
     curl \
-    default-libmysqlclient-dev \
+    default-lib \
+    mysqlclient-dev \
     libsasl2-dev \
     libsasl2-modules-gssapi-mit \
     libpq-dev \
