@@ -207,7 +207,7 @@ def nav_layout(user_name='Dustin Landers', title='Golgix Manufacturing Intellige
                      id='inner',
                      children=[
                          content_wrapper([
-                             html.Iframe(src='http://' + SUPERSET_IP + ':8080/superset/dashboard/' +
+                             html.Iframe(src='http://' + SUPERSET_IP + ':8088/superset/dashboard/' +
                                              FAILURE_PREDICTOR_DASH_NUM + '?standalone=3&expand_filters=0',
                                          height='100%',
                                          width='100%')])
@@ -284,7 +284,7 @@ def nav_layout(user_name='Dustin Landers', title='Golgix Manufacturing Intellige
                                                                                                      id='logout')
                                                                                      ],
                                                                                          target="_parent",
-                                                                                         href="http://" + SUPERSET_IP + ":8080/logout")
+                                                                                         href="http://" + SUPERSET_IP + ":8088/logout")
                                                                                  ])
                                                                      ],
                                                                      **{'aria-labelledby': 'profileDropdown',

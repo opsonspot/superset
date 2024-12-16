@@ -1,5 +1,5 @@
 {
-  "port": 8080,
+  "port": 8088,
   "logLevel": "info",
   "logToFile": false,
   "logFilename": "app.log",
@@ -16,7 +16,9 @@
     "ssl": false
   },
   "redisStreamPrefix": "async-events-",
-  "jwtAlgorithms": ["HS256"],
+  "jwtAlgorithms": [
+    "HS256"
+  ],
   "jwtSecret": "CHANGE-ME-IN-PRODUCTION-GOTTA-BE-LONG-AND-SECRET",
   "jwtCookieName": "async-token"
 }
