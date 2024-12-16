@@ -96,7 +96,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - database_data1:/var/lib/mysql
+      - db_home:/var/lib/mysql
 
   superset:
     env_file:
