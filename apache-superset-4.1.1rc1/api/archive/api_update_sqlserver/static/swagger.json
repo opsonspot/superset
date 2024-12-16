@@ -1,0 +1,49 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SQL Data Update API",
+        "version": "1.0.0",
+        "description": "API to update data in SQL server"
+    },
+    "paths": {
+        "/update-data": {
+            "post": {
+                "summary": "Update data in SQL server",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateDataRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UpdateDataRequest": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "new_value": {
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "new_value"]
+            }
+        }
+    }
+}

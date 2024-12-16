@@ -1,0 +1,16 @@
+FROM continuumio/miniconda3
+
+WORKDIR /home
+
+COPY dash .
+
+RUN conda create -n dash python=3.8 -y && \
+    echo "conda activate dash" >> ~/.bashrc
+
+RUN apt update && \
+    apt-get install -y unixodbc unixodbc-dev default-libmysqlclient-dev g++ && \
+    . /opt/conda/etc/profile.d/conda.sh && \
+    conda activate dash && \
+    pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org -r requirements.txt
+
+ENTRYPOINT [ "bash", "./run_dash.sh" ]

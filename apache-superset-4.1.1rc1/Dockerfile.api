@@ -1,0 +1,41 @@
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
+
+# Setup ODBC driver
+RUN apt-get update && apt-get install -y curl apt-transport-https gnupg
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+RUN curl https://packages.microsoft.com/config/debian/12/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
+RUN apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y unixodbc-dev msodbcsql18 libgssapi-krb5-2
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY api .
+
+# Install any needed packages specified in requirements.txt
+
+RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org -r requirements.txt
+
+# Make port 80 available to the world outside this container
+EXPOSE 5000
+
+# Define environment variable
+ENV host "database"
+ENV database "broan"
+ENV user "golgix"
+ENV password "preciseV5"
+ENV port "3306"
+
+ENV mssql_host "127.0.0.1"
+ENV mssql_database "broan"
+ENV mssql_user "golgix"
+ENV mssql_password "preciseV5"
+ENV mssql_port "1433"
+
+ENV DEBUG "true"
+
+# Run app.py when the container launches
+CMD ["python3", "app.py"]
