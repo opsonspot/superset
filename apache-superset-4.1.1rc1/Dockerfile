@@ -36,7 +36,6 @@ COPY superset-frontend /app/superset-frontend
 # Run the script for building and installing custom plugins
 COPY ./scripts/install-custom-plugins.sh ./scripts/install-custom-plugins.sh
 RUN ./scripts/install-custom-plugins.sh
-RUN npm run ${BUILD_CMD}
 
 # This copies the .po files needed for translation
 RUN mkdir -p /app/superset/translations
@@ -45,6 +44,7 @@ COPY superset/translations /app/superset/translations
 RUN npm run build-translation
 RUN rm /app/superset/translations/*/LC_MESSAGES/*.po
 RUN rm /app/superset/translations/messages.pot
+RUN npm run ${BUILD_CMD}
 
 ######################################################################
 # Final lean image...
