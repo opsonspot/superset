@@ -26,7 +26,7 @@ x-superset-user: &superset-user root
 x-superset-depends-on: &superset-depends-on
   - db
   - redis
-  - superset_init
+  - superset-init
 x-superset-volumes: &superset-volumes
   # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
   - ./docker:/app/docker
@@ -40,7 +40,6 @@ x-superset-volumes: &superset-volumes
 #   target: dev
 #   cache_from:
 #     - apache/superset-cache:3.10-slim-bookworm
-version: "3.7"
 services:
   # nginx:
   #   image: nginx:latest
@@ -164,7 +163,9 @@ services:
         required: true
       - path: docker/.env-local # optional override
         required: false
-    depends_on: *superset-depends-on
+    depends_on:
+      - db
+      - redis
     user: *superset-user
     volumes: *superset-volumes
     environment:
