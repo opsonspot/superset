@@ -22,6 +22,7 @@ RUN apt-get update -qq \
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # NPM ci first, as to NOT invalidate previous steps except for when package.json changes
+WORKDIR /app/superset-frontend
 
 COPY ./docker/frontend-mem-nag.sh /
 
