@@ -1,6 +1,6 @@
 import requests
 
-URL = 'http://localhost:8080'
+URL = 'http://localhost:8088'
 AUTH = ('admin', 'admin')
 AUTH_PAYLOAD = {"password": "admin",
                 "provider": "db",

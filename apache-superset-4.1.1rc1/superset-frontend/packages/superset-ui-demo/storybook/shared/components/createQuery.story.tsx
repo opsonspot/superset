@@ -90,7 +90,7 @@ export default function createQueryStory({
     );
   };
   story.args = {
-    host: 'localhost:8080',
+    host: 'localhost:8088',
     mode: keys[0],
     width: '400',
     height: '400',

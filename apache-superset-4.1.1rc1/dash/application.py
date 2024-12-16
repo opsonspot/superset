@@ -98,24 +98,24 @@ def contents_changer(w, x, y, a, s):
                 'nav-item menu-items',
                 'nav-item menu-items',
                 content_wrapper([
-                    html.Iframe(src='http://' + SUPERSET_IP + ':8080/superset/dashboard/' + FAILURE_PREDICTOR_DASH_NUM + '?standalone=3&expand_filters=0',
+                    html.Iframe(src='http://' + SUPERSET_IP + ':8088/superset/dashboard/' + FAILURE_PREDICTOR_DASH_NUM + '?standalone=3&expand_filters=0',
                         height='100%', width='100%', name='failure_predictor')
                     ]),
                 True,
                 overall_layout(captured_value))
     default = 'nav-item menu-items'
     performance_tracker = content_wrapper([
-        html.Iframe(src='http://' + SUPERSET_IP + ':8080/superset/dashboard/' +
+        html.Iframe(src='http://' + SUPERSET_IP + ':8088/superset/dashboard/' +
                         PERFORMANCE_TRACKER_DASH_NUM + '?standalone=3&expand_filters=0',
                     height='100%',
                     width='100%')])
     failure_predictor = content_wrapper([
-        html.Iframe(src='http://' + SUPERSET_IP + ':8080/superset/dashboard/' +
+        html.Iframe(src='http://' + SUPERSET_IP + ':8088/superset/dashboard/' +
                         FAILURE_PREDICTOR_DASH_NUM + '?standalone=3&expand_filters=0',
                     height='100%',
                     width='100%')])
     event_manager = content_wrapper([
-        html.Iframe(src='http://' + SUPERSET_IP + ':8080/superset/dashboard/' +
+        html.Iframe(src='http://' + SUPERSET_IP + ':8088/superset/dashboard/' +
                         EVENT_MANAGER_DASH_NUM + '?standalone=3&expand_filters=0',
                     height='100%',
                     width='100%',
