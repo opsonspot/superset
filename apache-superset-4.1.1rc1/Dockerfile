@@ -74,7 +74,7 @@ RUN mkdir -p ${PYTHONPATH} \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=superset:superset ./requirements/*.txt  requirements/
-COPY --chown=superset:superset ./setup.py ./superset3.0/MANIFEST.in ./superset3.0/README.md ./
+COPY --chown=superset:superset ./setup.py ./MANIFEST.in ./README.md ./
 # setup.py uses the version information in package.json
 COPY --chown=superset:superset ./superset-frontend/package.json superset-frontend/
 
@@ -106,7 +106,7 @@ RUN ./scripts/translations/generate_mo_files.sh \
     && rm superset/translations/messages.pot \
     && rm superset/translations/*/LC_MESSAGES/*.po
 
-COPY --chown=superset:superset ./superset3.0/superset-logos/* /app/superset/static/assets/images/
+COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
 RUN chmod +x /usr/bin/run-server.sh
 USER superset
