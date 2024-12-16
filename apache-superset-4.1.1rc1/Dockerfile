@@ -22,15 +22,14 @@ RUN apt-get update -qq \
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # NPM ci first, as to NOT invalidate previous steps except for when package.json changes
+
+RUN --mount=type=bind,target=/frontend-mem-nag.sh,src=./docker/frontend-mem-nag.sh \
+    /frontend-mem-nag.sh
+
 WORKDIR /app/superset-frontend
-
-COPY ./docker/frontend-mem-nag.sh /
-
-RUN /frontend-mem-nag.sh
-
-COPY /superset-frontend/package*.json ./
-
-RUN npm ci
+RUN --mount=type=bind,target=./package.json,src=./superset-frontend/package.json \
+    --mount=type=bind,target=./package-lock.json,src=./superset-frontend/package-lock.json \
+    npm ci
 
 # Runs the webpack build process
 COPY superset-frontend /app/superset-frontend
@@ -61,7 +60,7 @@ ENV LANG=C.UTF-8 \
     SUPERSET_HOME="/app/superset_home" \
     SUPERSET_PORT=8088
 
-RUN mkdir -p ${PYTHONPATH} \
+RUN mkdir -p ${PYTHONPATH} superset/static requirements superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
     && apt-get update -qq && apt-get install -yqq --no-install-recommends \
     build-essential \
@@ -75,15 +74,9 @@ RUN mkdir -p ${PYTHONPATH} \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --chown=superset:superset ./requirements/*.txt  requirements/
-COPY --chown=superset:superset ./setup.py ./MANIFEST.in ./README.md ./
+COPY --chown=superset:superset pyproject.toml setup.py MANIFEST.in README.md ./
 # setup.py uses the version information in package.json
-COPY --chown=superset:superset ./superset-frontend/package.json superset-frontend/
-
-RUN mkdir -p superset/static \
-    && touch superset/static/version_info.json \
-    && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -r requirements/local.txt
-
+COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
 COPY --chown=superset:superset requirements/base.txt requirements/
 RUN --mount=type=cache,target=/root/.cache/pip \
     apt-get update -qq && apt-get install -yqq --no-install-recommends \
@@ -93,6 +86,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && apt-get autoremove -yqq --purge build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy the compiled frontend assets
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
 
 ## Lastly, let's install superset itself
@@ -108,16 +102,16 @@ RUN ./scripts/translations/generate_mo_files.sh \
     && rm superset/translations/messages.pot \
     && rm superset/translations/*/LC_MESSAGES/*.po
 
-COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
+# COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
-RUN chmod +x /usr/bin/run-server.sh
+# RUN chmod +x /usr/bin/run-server.sh
 USER superset
 
 HEALTHCHECK CMD curl -f "http://localhost:${SUPERSET_PORT}/health"
 
 EXPOSE ${SUPERSET_PORT}
 
-CMD ["sh /usr/bin/run-server.sh"]
+CMD ["/usr/bin/run-server.sh"]
 
 ######################################################################
 # Dev image...
