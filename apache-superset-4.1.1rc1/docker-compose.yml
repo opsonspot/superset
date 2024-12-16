@@ -68,7 +68,7 @@ services:
       host:
       user: golgix
       password: preciseV5
-      database: broan
+      database: master
     restart: unless-stopped
     ports:
       - "5001:5000"
