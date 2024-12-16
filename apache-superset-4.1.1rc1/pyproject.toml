@@ -259,8 +259,8 @@ setenv =
     sqlite: SUPERSET__SQLALCHEMY_DATABASE_URI = sqlite:////{envtmpdir}/superset.db
     sqlite: SUPERSET__SQLALCHEMY_EXAMPLES_URI = sqlite:////{envtmpdir}/examples.db
     mysql-presto: SUPERSET__SQLALCHEMY_DATABASE_URI = mysql://mysqluser:mysqluserpassword@localhost/superset?charset=utf8
-    # docker run -p 8080:8080 --name presto starburstdata/presto
-    mysql-presto: SUPERSET__SQLALCHEMY_EXAMPLES_URI = presto://localhost:8080/memory/default
+    # docker run -p 8088:8088 --name presto starburstdata/presto
+    mysql-presto: SUPERSET__SQLALCHEMY_EXAMPLES_URI = presto://localhost:8088/memory/default
     # based on https://github.com/big-data-europe/docker-hadoop
     # clone the repo & run docker compose up -d to test locally
     mysql-hive: SUPERSET__SQLALCHEMY_DATABASE_URI = mysql://mysqluser:mysqluserpassword@localhost/superset?charset=utf8
