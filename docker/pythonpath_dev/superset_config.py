@@ -93,7 +93,7 @@ class CeleryConfig:
 CELERY_CONFIG = CeleryConfig
 APP_NAME = "WoodFrog"
 APP_ICON = "/static/assets/superset-logo-horiz.png"
-FAVICONS=[{"href": "/static/assets/favicon.png"}]
+FAVICONS=[{"href": "/static/assets/favicon.ico"}]
 FEATURE_FLAGS = {"ALERT_REPORTS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
 WEBDRIVER_BASEURL = "http://superset:8088/"
