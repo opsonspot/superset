@@ -46,11 +46,11 @@ case "${1}" in
     rm -f /tmp/celerybeat.pid
     celery --app=superset.tasks.celery_app:app beat --pidfile /tmp/celerybeat.pid -l INFO -s "${SUPERSET_HOME}"/celerybeat-schedule
     ;;
-  app)
+  app-gunicorn)
     echo "Starting web app (using development server)..."
     flask run -p 8088 --with-threads --reload --debugger --host=0.0.0.0
     ;;
-  app-gunicorn)
+  app)
     echo "Starting web app..."
     /usr/bin/run-server.sh
     ;;

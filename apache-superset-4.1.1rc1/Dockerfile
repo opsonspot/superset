@@ -103,7 +103,7 @@ RUN chown -R superset:superset ./* \
     && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -e . \
     && flask fab babel-compile --target superset/translations
 
-COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
+COPY ./superset-logos/* /app/superset/static/assets/images/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
 RUN chmod +x /usr/bin/run-server.sh
 USER superset
