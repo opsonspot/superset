@@ -69,11 +69,13 @@ ENV LANG=C.UTF-8 \
     FLASK_APP="superset.app:create_app()" \
     PYTHONPATH="/app/pythonpath" \
     SUPERSET_HOME="/app/superset_home" \
-    SUPERSET_PORT=8088
+    SUPERSET_PORT=8080
 
-RUN mkdir -p ${PYTHONPATH} superset/static requirements superset-frontend apache_superset.egg-info requirements \
+RUN mkdir -p ${PYTHONPATH} \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
-    && apt-get update -qq && apt-get install -yqq --no-install-recommends \
+    && apt-get update -q \
+    && apt-get install -yq --no-install-recommends \
+    build-essential \
     curl \
     default-libmysqlclient-dev \
     libsasl2-dev \
@@ -81,49 +83,35 @@ RUN mkdir -p ${PYTHONPATH} superset/static requirements superset-frontend apache
     libpq-dev \
     libecpg-dev \
     libldap2-dev \
-    pkg-config \
-    && touch superset/static/version_info.json \
-    && chown -R superset:superset ./* \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --chown=superset:superset pyproject.toml setup.py MANIFEST.in README.md ./
+COPY --chown=superset:superset ./requirements/*.txt  requirements/
+COPY --chown=superset:superset ./setup.py ./MANIFEST.in ./README.md ./
 # setup.py uses the version information in package.json
-COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
-COPY --chown=superset:superset requirements/base.txt requirements/
-RUN --mount=type=cache,target=/root/.cache/pip \
-    apt-get update -qq && apt-get install -yqq --no-install-recommends \
-    build-essential \
-    && pip install --upgrade setuptools pip \
-    && pip install -r requirements/base.txt \
-    && apt-get autoremove -yqq --purge build-essential \
-    && rm -rf /var/lib/apt/lists/*
+COPY --chown=superset:superset ./superset-frontend/package.json superset-frontend/
 
-# Copy the compiled frontend assets
+RUN mkdir -p superset/static \
+    && touch superset/static/version_info.json \
+    && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -r requirements/local.txt
+
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
-
 ## Lastly, let's install superset itself
-COPY --chown=superset:superset superset superset
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -e .
+COPY --chown=superset:superset /superset superset
 
-# Copy the .json translations from the frontend layer
-COPY --chown=superset:superset --from=superset-node /app/superset/translations superset/translations
+RUN chown -R superset:superset ./* \
+    && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -e . \
+    && flask fab babel-compile --target superset/translations
 
-# Compile translations for the backend - this generates .mo files, then deletes the .po files
-COPY ./scripts/translations/generate_mo_files.sh ./scripts/translations/
-RUN ./scripts/translations/generate_mo_files.sh \
-    && chown -R superset:superset superset/translations \
-    && rm superset/translations/messages.pot \
-    && rm superset/translations/*/LC_MESSAGES/*.po
-
+COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
+RUN chmod +x /usr/bin/run-server.sh
 USER superset
 
-HEALTHCHECK CMD curl -f "http://localhost:${SUPERSET_PORT}/health"
+HEALTHCHECK CMD curl -f "http://localhost:$SUPERSET_PORT/health"
 
 EXPOSE ${SUPERSET_PORT}
 
-CMD ["/usr/bin/run-server.sh"]
+CMD ["sh /usr/bin/run-server.sh"]
 
 ######################################################################
 # Dev image...
