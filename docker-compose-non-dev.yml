@@ -88,7 +88,8 @@ services:
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
     restart: unless-stopped
-    depends_on: *superset-depends-on
+    depends_on:
+      - superset-init
     volumes: *superset-volumes
 
   superset-init:
