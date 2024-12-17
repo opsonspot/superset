@@ -28,8 +28,8 @@ ARG NPM_BUILD_CMD="build"
 
 RUN apt-get update -qq \
     && apt-get install -yqq --no-install-recommends \
-        build-essential \
-        python3
+    build-essential \
+    python3
 
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -65,14 +65,14 @@ ENV LANG=C.UTF-8 \
 RUN mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
     && apt-get update -qq && apt-get install -yqq --no-install-recommends \
-        build-essential \
-        curl \
-        default-libmysqlclient-dev \
-        libsasl2-dev \
-        libsasl2-modules-gssapi-mit \
-        libpq-dev \
-        libecpg-dev \
-        libldap2-dev \
+    build-essential \
+    curl \
+    default-libmysqlclient-dev \
+    libsasl2-dev \
+    libsasl2-modules-gssapi-mit \
+    libpq-dev \
+    libecpg-dev \
+    libldap2-dev \
     && touch superset/static/version_info.json \
     && chown -R superset:superset ./* \
     && rm -rf /var/lib/apt/lists/*
@@ -114,13 +114,13 @@ USER root
 
 RUN apt-get update -qq \
     && apt-get install -yqq --no-install-recommends \
-        libnss3 \
-        libdbus-glib-1-2 \
-        libgtk-3-0 \
-        libx11-xcb1 \
-        libasound2 \
-        libxtst6 \
-        wget \
+    libnss3 \
+    libdbus-glib-1-2 \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libasound2 \
+    libxtst6 \
+    wget \
     # Install GeckoDriver WebDriver
     && wget -q https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz -O - | tar xfz - -C /usr/local/bin \
     # Install Firefox
@@ -138,7 +138,29 @@ USER superset
 # CI image...
 ######################################################################
 FROM lean AS ci
+ARG GECKODRIVER_VERSION=v0.32.0
+ARG FIREFOX_VERSION=106.0.3
 
-COPY --chown=superset:superset --chmod=755 ./docker/*.sh /app/docker/
+USER root
+
+RUN apt-get update -q \
+    && apt-get install -yq --no-install-recommends \
+    libnss3 \
+    libdbus-glib-1-2 \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libasound2 \
+    libxtst6 \
+    wget \
+    # Install GeckoDriver WebDriver
+    && wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz -O - | tar xfz - -C /usr/local/bin \
+    # Install Firefox
+    && wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 -O - | tar xfj - -C /opt \
+    && ln -s /opt/firefox/firefox /usr/local/bin/firefox \
+    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/* && apt-get clean
+
+USER superset
+
+COPY --chown=superset --chmod=755 ./docker/*.sh /app/docker/
 
 CMD ["/app/docker/docker-ci.sh"]
