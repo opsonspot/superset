@@ -1,0 +1,13 @@
+FROM ubuntu:22.04
+
+WORKDIR /home
+
+COPY database .
+
+
+RUN chmod +x create_database.sh && \
+    ./create_database.sh
+
+EXPOSE 3306
+
+ENTRYPOINT [ "mysqld_safe" ]
