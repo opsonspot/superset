@@ -83,6 +83,7 @@ RUN mkdir -p ${PYTHONPATH} \
     libpq-dev \
     libecpg-dev \
     libldap2-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=superset:superset ./requirements/*.txt  requirements/
