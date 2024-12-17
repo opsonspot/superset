@@ -103,7 +103,9 @@ WEBDRIVER_BASEURL = "http://superset_app:8088/"  # When using docker compose bas
 # The base URL for the email report hyperlinks.
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
 SQLLAB_CTAS_NO_LIMIT = True
-
+APP_NAME = "WoodFrog"
+APP_ICON = "/static/assets/images/superset-logo-horiz.png"
+FAVICONS=[{"herf": "/static/assets/images/favicon.png"}]
 #
 # Optionally import superset_config_docker.py (which will have been included on
 # the PYTHONPATH) in order to allow for local settings to be overridden
