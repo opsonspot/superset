@@ -73,6 +73,7 @@ services:
       - "3306:3306"
     volumes:
       - superset_database_data1:/var/lib/mysql
+      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   superset:
     env_file: docker/.env-non-dev
     build: # Add a build configuration for superset-worker
@@ -83,7 +84,7 @@ services:
     #image: *superset-image
     container_name: superset_app
     ports:
-      - "8080:8088"
+      - 8080:8088
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
     restart: unless-stopped
