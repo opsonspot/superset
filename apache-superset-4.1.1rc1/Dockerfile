@@ -27,7 +27,7 @@ FROM --platform=${BUILDPLATFORM} node:18-bullseye-slim AS superset-node
 ARG NPM_BUILD_CMD="build"
 
 # Somehow we need python3 + build-essential on this side of the house to install node-gyp
-RUN apt-get update -qq \
+RUN apt-get update -q \
     && apt-get install \
     -yqq --no-install-recommends \
     build-essential \
@@ -46,8 +46,7 @@ RUN --mount=type=bind,target=./package.json,src=./superset-frontend/package.json
     npm ci
 
 # Runs the webpack build process
-COPY superset-frontend /app/superset-frontend
-COPY ./superset-logos/* /app/superset/static/assets/images/
+COPY superset-frontend ./
 RUN npm run ${BUILD_CMD}
 
 # This copies the .po files needed for translation
@@ -105,7 +104,7 @@ RUN chown -R superset:superset ./* \
     && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -e . \
     && flask fab babel-compile --target superset/translations
 
-COPY ./superset-logos/* /app/superset/static/assets/images/
+COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
 RUN chmod +x /usr/bin/run-server.sh
 USER superset
@@ -152,14 +151,15 @@ RUN apt-get update -qq \
     && apt-get autoremove -yqq --purge wget bzip2 && rm -rf /var/[log,tmp]/* /tmp/* /var/lib/apt/lists/*
 # Cache everything for dev purposes...
 
-COPY --chown=superset:superset requirements/development.txt requirements/
+COPY --chown=superset:superset /requirements/*.txt ./docker/requirements-*.txt /app/requirements/
 RUN --mount=type=cache,target=/root/.cache/pip \
     apt-get update -qq && apt-get install -yqq --no-install-recommends \
     build-essential \
-    && pip install -r requirements/development.txt \
     && apt-get autoremove -yqq --purge build-essential \
     && rm -rf /var/lib/apt/lists/*
-
+RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org pymysql
+RUN pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -r /app/requirements/docker.txt \
+    && pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org --no-cache-dir -r /app/requirements/requirements-local.txt || true
 USER superset
 ######################################################################
 # CI image...

@@ -29,17 +29,17 @@ x-superset-depends-on: &superset-depends-on
   - superset-init
 x-superset-volumes: &superset-volumes
   # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
-  - ./docker:/app/docker
-  - ./superset:/app/superset
-  - ./superset-frontend:/app/superset-frontend
-  - superset_home:/app/superset_home
-  - ./tests:/app/tests
+  # - ./docker:/app/docker
+  - ./:/app
+  # - ./superset-frontend:/app/superset-frontend
+  # - superset_home:/app/superset_home
+  # - ./tests:/app/tests
 
-# x-common-build: &common-build
-#   context: .
-#   target: dev
-#   cache_from:
-#     - apache/superset-cache:3.10-slim-bookworm
+x-common-build: &common-build
+  context: .
+  target: dev
+  cache_from:
+    - apache/superset-cache:3.10-slim-bookworm
 services:
   # nginx:
   #   image: nginx:latest
@@ -170,6 +170,8 @@ services:
     volumes: *superset-volumes
     environment:
       CYPRESS_CONFIG: "${CYPRESS_CONFIG:-}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       disable: true
 
@@ -177,6 +179,8 @@ services:
     image: node:18
     container_name: superset_node
     command: ["/app/docker/docker-frontend.sh"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     env_file:
       - path: docker/.env # default
         required: true
@@ -220,6 +224,8 @@ services:
       - path: docker/.env-local # optional override
         required: false
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on: *superset-depends-on
     user: *superset-user
     volumes: *superset-volumes
@@ -257,6 +263,5 @@ volumes:
   superset_home:
     external: false
   db_home:
-    external: false
   redis:
     external: false
