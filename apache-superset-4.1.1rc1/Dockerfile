@@ -47,6 +47,7 @@ RUN --mount=type=bind,target=./package.json,src=./superset-frontend/package.json
 
 # Runs the webpack build process
 COPY superset-frontend /app/superset-frontend
+COPY ./superset-logos/* /app/superset/static/assets/images/
 RUN npm run ${BUILD_CMD}
 
 # This copies the .po files needed for translation
@@ -90,6 +91,7 @@ COPY --chown=superset:superset ./requirements/*.txt  requirements/
 COPY --chown=superset:superset ./setup.py ./MANIFEST.in ./README.md ./
 # setup.py uses the version information in package.json
 COPY --chown=superset:superset ./superset-frontend/package.json superset-frontend/
+COPY --chown=superset:superset ./superset-logos/* /app/superset/static/assets/images/
 
 RUN mkdir -p superset/static \
     && touch superset/static/version_info.json \
@@ -163,6 +165,18 @@ USER superset
 # CI image...
 ######################################################################
 FROM lean AS ci
+
+USER root
+
+RUN apt-get update -q \
+    && apt-get install -yq --no-install-recommends \
+    libnss3 \
+    libdbus-glib-1-2 \
+    libgtk-3-0 \
+    libx11-xcb1 \
+    libasound2 \
+    libxtst6 \
+    wget
 
 COPY --chown=superset:superset --chmod=755 ./docker/*.sh /app/docker/
 
