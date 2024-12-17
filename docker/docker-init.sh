@@ -47,6 +47,7 @@ if [ "$CYPRESS_CONFIG" == "true" ]; then
 fi
 # Initialize the database
 echo_step "1" "Starting" "Applying DB migrations"
+pip install --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org apache-superset
 superset db upgrade
 echo_step "1" "Complete" "Applying DB migrations"
 
