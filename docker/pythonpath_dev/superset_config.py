@@ -99,7 +99,8 @@ ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
 WEBDRIVER_BASEURL = "http://superset:8080/"
 # The base URL for the email report hyperlinks.
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
-
+APPLICATION_ROOT="woodfrog"
+SUPERSET_WEBSERVER_BASEURL="http://superset:8080/woodfrog"
 SQLLAB_CTAS_NO_LIMIT = True
 
 #

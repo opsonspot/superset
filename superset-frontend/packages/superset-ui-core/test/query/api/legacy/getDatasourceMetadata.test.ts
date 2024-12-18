@@ -33,7 +33,7 @@ describe('getFormData()', () => {
     };
 
     fetchMock.get(
-      'glob:*/superset/fetch_datasource_metadata?datasourceKey=1__table',
+      'glob:*/woodfrog/fetch_datasource_metadata?datasourceKey=1__table',
       mockData,
     );
 
