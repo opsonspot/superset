@@ -32,7 +32,8 @@ RUN apt-get update -qq \
     python3
 
 ENV BUILD_CMD=${NPM_BUILD_CMD} \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    SUPERSET_CONFIG_PATH=/app/superset_config.py
 # NPM ci first, as to NOT invalidate previous steps except for when package.json changes
 WORKDIR /app/superset-frontend
 
@@ -60,7 +61,8 @@ ENV LANG=C.UTF-8 \
     FLASK_APP="superset.app:create_app()" \
     PYTHONPATH="/app/pythonpath" \
     SUPERSET_HOME="/app/superset_home" \
-    SUPERSET_PORT=8088
+    SUPERSET_PORT=8088 \
+    SUPERSET_CONFIG_PATH=/app/superset_config.py
 
 RUN mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
@@ -94,7 +96,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && chown -R superset:superset superset/translations
 COPY --chown=superset:superset superset-logos/* /app/superset/static/assets/images
 COPY --chown=superset:superset superset-logos/* /app/superset/static/assets/
-
+COPY --chown=superset:superset docker/pythonpath_dev/superset_config.py /app/
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
 USER superset
 
