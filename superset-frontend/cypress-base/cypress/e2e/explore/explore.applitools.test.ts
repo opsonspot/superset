@@ -20,7 +20,7 @@ import { FORM_DATA_DEFAULTS, NUM_METRIC } from './visualizations/shared.helper';
 
 describe('explore view', () => {
   beforeEach(() => {
-    cy.intercept('POST', '/superset/explore_json/**').as('getJson');
+    cy.intercept('POST', '/woodfrog/explore_json/**').as('getJson');
   });
 
   afterEach(() => {

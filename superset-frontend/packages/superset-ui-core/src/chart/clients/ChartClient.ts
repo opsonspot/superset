@@ -91,8 +91,8 @@ export default class ChartClient {
     return input.formData
       ? Promise.resolve(input.formData as QueryFormData)
       : Promise.reject(
-          new Error('At least one of sliceId or formData must be specified'),
-        );
+        new Error('At least one of sliceId or formData must be specified'),
+      );
   }
 
   async loadQueryData(
@@ -109,19 +109,19 @@ export default class ChartClient {
         (await buildQueryRegistry.get(visType)) ?? (() => formData);
       const requestConfig: RequestConfig = useLegacyApi
         ? {
-            endpoint: '/superset/explore_json/',
-            postPayload: {
-              form_data: buildQuery(formData),
-            },
-            ...options,
-          }
+          endpoint: '/woodfrog/explore_json/',
+          postPayload: {
+            form_data: buildQuery(formData),
+          },
+          ...options,
+        }
         : {
-            endpoint: '/api/v1/chart/data',
-            jsonPayload: {
-              query_context: buildQuery(formData),
-            },
-            ...options,
-          };
+          endpoint: '/api/v1/chart/data',
+          jsonPayload: {
+            query_context: buildQuery(formData),
+          },
+          ...options,
+        };
 
       return this.client
         .post(requestConfig)

@@ -132,7 +132,7 @@ type Routes = {
 
 export const routes: Routes = [
   {
-    path: '/superset/welcome/',
+    path: '/woodfrog/welcome/',
     Component: Home,
   },
   {
@@ -140,7 +140,7 @@ export const routes: Routes = [
     Component: DashboardList,
   },
   {
-    path: '/superset/dashboard/:idOrSlug/',
+    path: '/woodfrog/dashboard/:idOrSlug/',
     Component: Dashboard,
   },
   {
@@ -206,7 +206,7 @@ export const routes: Routes = [
     Component: Chart,
   },
   {
-    path: '/superset/explore/p',
+    path: '/woodfrog/explore/p',
     Component: Chart,
   },
   {
@@ -229,11 +229,11 @@ export const routes: Routes = [
 
 if (isFeatureEnabled(FeatureFlag.TaggingSystem)) {
   routes.push({
-    path: '/superset/all_entities/',
+    path: '/woodfrog/all_entities/',
     Component: AllEntities,
   });
   routes.push({
-    path: '/superset/tags/',
+    path: '/woodfrog/tags/',
     Component: Tags,
   });
 }
