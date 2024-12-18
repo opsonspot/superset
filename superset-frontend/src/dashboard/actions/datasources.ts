@@ -28,14 +28,14 @@ export enum DatasourcesAction {
 
 export type DatasourcesActionPayload =
   | {
-      type: DatasourcesAction.SetDatasources;
-      datasources: Datasource[] | null;
-    }
+    type: DatasourcesAction.SetDatasources;
+    datasources: Datasource[] | null;
+  }
   | {
-      type: DatasourcesAction.SetDatasource;
-      key: Datasource['uid'];
-      datasource: Datasource;
-    };
+    type: DatasourcesAction.SetDatasource;
+    key: Datasource['uid'];
+    datasource: Datasource;
+  };
 
 export function setDatasources(datasources: Datasource[] | null) {
   return {
@@ -62,7 +62,7 @@ export function fetchDatasourceMetadata(key: string) {
     }
 
     return SupersetClient.get({
-      endpoint: `/superset/fetch_datasource_metadata?datasourceKey=${key}`,
+      endpoint: `/woodfrog/fetch_datasource_metadata?datasourceKey=${key}`,
     }).then(({ json }) => dispatch(setDatasource(json as Datasource, key)));
   };
 }

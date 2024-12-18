@@ -31,7 +31,7 @@ const DASHBOARD_ID = '26';
 const createProps = () => ({
   addDangerToast: jest.fn(),
   addSuccessToast: jest.fn(),
-  url: `/superset/dashboard/${DASHBOARD_ID}`,
+  url: `/woodfrog/dashboard/${DASHBOARD_ID}`,
   copyMenuItemTitle: 'Copy dashboard URL',
   emailMenuItemTitle: 'Share dashboard by email',
   emailSubject: 'Superset dashboard COVID Vaccine Dashboard',

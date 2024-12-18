@@ -40,7 +40,7 @@ export const interceptV1ChartData = (alias = 'v1Data') => {
 };
 
 export function interceptExploreJson(alias = 'getJson') {
-  cy.intercept('POST', `/superset/explore_json/**`).as(alias);
+  cy.intercept('POST', `/woodfrog/explore_json/**`).as(alias);
 }
 
 export const interceptFormDataKey = () => {
