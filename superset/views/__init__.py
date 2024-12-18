@@ -24,6 +24,5 @@ from . import (
     health,
     sql_lab,
     tags,
-    redirects,
 )
 from .log import api as log_api, views
