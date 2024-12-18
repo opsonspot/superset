@@ -68,11 +68,11 @@ ROLE_ALL_PERM_DATA = {
 }
 
 EXTEND_ROLE_REQUEST = (
-    "/superset/approve?datasource_type={}&datasource_id={}&"
+    "/woodfrog/approve?datasource_type={}&datasource_id={}&"
     "created_by={}&role_to_extend={}"
 )
 GRANT_ROLE_REQUEST = (
-    "/superset/approve?datasource_type={}&datasource_id={}&"
+    "/woodfrog/approve?datasource_type={}&datasource_id={}&"
     "created_by={}&role_to_grant={}"
 )
 TEST_ROLE_1 = "test_role1"
