@@ -96,7 +96,9 @@ APP_ICON = "https://woodfrog.tech/logo_dark.png"
 FAVICONS=[{"href": "https://woodfrog.tech/favicon.ico"}]
 FEATURE_FLAGS = {"ALERT_REPORTS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
+BASE_URL = "http://0.0.0.0:8080/woodfrog"
 WEBDRIVER_BASEURL = "http://superset:8080/"
+ENABLE_PROXY_FIX = True
 # The base URL for the email report hyperlinks.
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
 SQLLAB_CTAS_NO_LIMIT = True
