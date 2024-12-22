@@ -93,9 +93,9 @@ services:
       - ./docker:/app/docker
       - superset_home:/app/superset_home
       - ./:/app
-      - ./superset_config.py:/app/superset_config.py  # Add this line
-    environment:
-      - SUPERSET_CONFIG_PATH=/app/superset_config.py  # Add this line
+      - ./superset_config.py:/app/superset_config.py
+    # environment:
+      # - SUPERSET_CONFIG_PATH=/app/superset_config.py
 
 
   superset-init:
