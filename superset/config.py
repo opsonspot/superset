@@ -1106,7 +1106,7 @@ CUSTOM_TEMPLATE_PROCESSORS: dict[str, type[BaseTemplateProcessor]] = {}
 # by humans.
 ROBOT_PERMISSION_ROLES = ["Public", "Gamma", "Alpha", "Admin", "sql_lab"]
 
-CONFIG_PATH_ENV_VAR = "/app/superset_config.py"
+CONFIG_PATH_ENV_VAR = "SUPERSET_CONFIG_PATH"
 
 # If a callable is specified, it will be called at app startup while passing
 # a reference to the Flask app. This can be used to alter the Flask app
