@@ -1,0 +1,11 @@
+demo.woodfrog.tech {
+   reverse_proxy superset_app:8088
+}
+
+localhost {
+    reverse_proxy superset_app:8088
+}
+
+:80 {
+   reverse_proxy superset_app:8088
+}

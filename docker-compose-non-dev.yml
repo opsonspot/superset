@@ -1,54 +1,51 @@
-#
-# Licensed to the Apache Software Foundation (ASF) under one or more
-# contributor license agreements.  See the NOTICE file distributed with
-# this work for additional information regarding copyright ownership.
-# The ASF licenses this file to You under the Apache License, Version 2.0
-# (the "License"); you may not use this file except in compliance with
-# the License.  You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+version: "3.7"
+
 x-superset-image: &superset-image woodfrog-superset:latest
 x-superset-depends-on: &superset-depends-on
   - database
   - redis
-x-superset-volumes:
-  &superset-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+x-superset-volumes: &superset-volumes
   - ./docker:/app/docker
   - superset_home:/app/superset_home
   - ./:/app
 
-version: "3.7"
 services:
- # nginx:
- #   image: nginx:latest
- #   restart: unless-stopped
- #   ports:
- #     - "8080:80"
- #   volumes:
- #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
- #   depends_on:
- #     - superset
- #     - api
+  caddy:
+    image: caddy
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - superset
+    networks:
+      - superset_network
+
   redis:
     image: redis:7
     container_name: superset_cache
     restart: unless-stopped
     volumes:
       - redis:/data
-  dash:
+    networks:
+      - superset_network
+
+  database:
     build:
       context: .
-      dockerfile: Dockerfile.dash
+      dockerfile: Dockerfile.database
+    container_name: superset_database
     restart: unless-stopped
     ports:
-      - "5000:5000"
+      - "3306:3306"
+    volumes:
+      - superset_database_data1:/var/lib/mysql
+      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - superset_network
 
   api:
     build:
@@ -62,58 +59,60 @@ services:
     restart: unless-stopped
     depends_on:
       - database
+    networks:
+      - superset_network
 
-  database:
+  dash:
     build:
       context: .
-      dockerfile: Dockerfile.database
-    container_name: superset_database
+      dockerfile: Dockerfile.dash
     restart: unless-stopped
     ports:
-      - "3306:3306"
-    volumes:
-      - superset_database_data1:/var/lib/mysql
-      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - "5000:5000"
+    networks:
+      - superset_network
+
   superset:
     env_file: docker/.env-non-dev
-    build: # Add a build configuration for superset-worker
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
-    #image: *superset-image
     container_name: superset_app
     ports:
-      - 8080:8088
+      - "8080:8088"
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
     restart: unless-stopped
     depends_on: *superset-depends-on
     volumes: *superset-volumes
+    networks:
+      - superset_network
 
   superset-init:
-    build: # Add a build configuration for superset-worker
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
-    #image: *superset-image
     container_name: superset_init
     command: ["/app/docker/docker-init.sh"]
     env_file: docker/.env-non-dev
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
+    networks:
+      - superset_network
     healthcheck:
       disable: true
 
   superset-worker:
-    build: # Add a build configuration for superset-worker
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
-    #image: *superset-image
     container_name: superset_worker
     command: ["/app/docker/docker-bootstrap.sh", "worker"]
     env_file: docker/.env-non-dev
@@ -121,6 +120,8 @@ services:
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
+    networks:
+      - superset_network
     healthcheck:
       test:
         [
@@ -129,19 +130,20 @@ services:
         ]
 
   superset-worker-beat:
-    #image: *superset-image
-    container_name: superset_worker_beat
-    build: # Add a build configuration for superset-worker
+    build:
       context: .
       dockerfile: Dockerfile
       args:
         DOCKER_BUILDKIT: 1
+    container_name: superset_worker_beat
     command: ["/app/docker/docker-bootstrap.sh", "beat"]
     env_file: docker/.env-non-dev
     restart: unless-stopped
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
+    networks:
+      - superset_network
     healthcheck:
       disable: true
 
@@ -151,3 +153,7 @@ volumes:
   superset_database_data1:
   redis:
     external: false
+
+networks:
+  superset_network:
+    driver: bridge
