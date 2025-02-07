@@ -88,10 +88,13 @@ RUN --mount=type=bind,target=./requirements/local.txt,src=./requirements/local.t
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
 ## Lastly, let's install superset itself
 COPY --chown=superset:superset superset superset
+COPY --chown=superset:superset docker/pythonpath_dev/*.py /app/pythonpath/
+COPY --chown=superset:superset docker/pythonpath_dev/*.py /app/
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -e . \
     && flask fab babel-compile --target superset/translations \
     && chown -R superset:superset superset/translations
+COPY --chown=superset:superset superset-logos/* /app/superset/static/assets/images
 COPY --chown=superset:superset superset-logos/* /app/superset/static/assets/
 
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/

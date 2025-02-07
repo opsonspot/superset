@@ -73,7 +73,7 @@ class TestCacheWarmUp(SupersetTestCase):
         self.login(username="admin")
         dash = self.get_dash_by_slug("births")
         for _ in range(10):
-            self.client.get(f"/superset/dashboard/{dash.id}/")
+            self.client.get(f"/woodfrog/dashboard/{dash.id}/")
 
         strategy = TopNDashboardsStrategy(1)
         result = strategy.get_payloads()

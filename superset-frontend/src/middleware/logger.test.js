@@ -71,7 +71,7 @@ describe('logger middleware', () => {
     clock.tick(2000);
     expect(SupersetClient.post.callCount).toBe(1);
     expect(SupersetClient.post.getCall(0).args[0].endpoint).toMatch(
-      '/superset/log/',
+      '/woodfrog/log/',
     );
   });
 
@@ -124,7 +124,7 @@ describe('logger middleware', () => {
 
     expect(beaconMock.mock.calls.length).toBe(1);
     const endpoint = beaconMock.mock.calls[0][0];
-    expect(endpoint).toMatch('/superset/log/');
+    expect(endpoint).toMatch('/woodfrog/log/');
   });
 
   it('should pass a guest token to sendBeacon if present', () => {

@@ -363,7 +363,7 @@ class TestDatasource(SupersetTestCase):
         datasource_post = get_datasource_post()
         datasource_post["id"] = tbl_id
         datasource_post["owners"] = [1]
-        datasource_post["default_endpoint"] = "http://localhost/superset/1"
+        datasource_post["default_endpoint"] = "http://localhost/woodfrog/1"
         data = dict(data=json.dumps(datasource_post))
         resp = self.client.post("/datasource/save/", data=data)
         assert resp.status_code == 200

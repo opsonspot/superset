@@ -903,7 +903,7 @@ class TestUtils(SupersetTestCase):
 
         assert slc.viz is not None
         resp = self.get_json_resp(
-            f"/superset/explore_json/{slc.datasource_type}/{slc.datasource_id}/"
+            f"/woodfrog/explore_json/{slc.datasource_type}/{slc.datasource_id}/"
             + f'?form_data={{"slice_id": {slc.id}}}&dashboard_id={dashboard_id}',
             {"form_data": json.dumps(slc.viz.form_data)},
         )

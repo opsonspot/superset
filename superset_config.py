@@ -96,8 +96,7 @@ APP_ICON = "https://woodfrog.tech/logo_dark.png"
 FAVICONS=[{"href": "https://woodfrog.tech/favicon.ico"}]
 FEATURE_FLAGS = {"ALERT_REPORTS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
-WEBDRIVER_BASEURL = "http://superset:8080/"
-ROUTE_BASE_URL = "woodfrog"
+WEBDRIVER_BASEURL = "http://superset:8080/woodfrog"
 PREFERRED_URL_SCHEME = 'http'
 ENABLE_PROXY_FIX = True
 # The base URL for the email report hyperlinks.

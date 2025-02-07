@@ -124,7 +124,7 @@ describe('Cross-referenced dashboards', () => {
 
 describe('No Results', () => {
   beforeEach(() => {
-    cy.intercept('POST', '/superset/explore_json/**').as('getJson');
+    cy.intercept('POST', '/woodfrog/explore_json/**').as('getJson');
   });
 
   it('No results message shows up', () => {

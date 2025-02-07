@@ -278,7 +278,7 @@ const config = {
     minimizer: [new CssMinimizerPlugin(), '...'],
   },
   resolve: {
-    // resolve modules from `/superset_frontend/node_modules` and `/superset_frontend`
+    // resolve modules from `/woodfrog_frontend/node_modules` and `/woodfrog_frontend`
     modules: ['node_modules', APP_DIR],
     alias: {
       // TODO: remove aliases once React has been upgraded to v. 17 and

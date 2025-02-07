@@ -33,7 +33,7 @@ describe.skip('Dashboard form data', () => {
         expect(query.url_params).deep.eq(urlParams);
       });
     });
-    cy.intercept('/superset/explore_json/*', request => {
+    cy.intercept('/woodfrog/explore_json/*', request => {
       const requestParams = JSON.parse(
         parsePostForm(request.body).form_data as string,
       );

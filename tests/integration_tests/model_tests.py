@@ -110,7 +110,7 @@ class TestDatabaseModel(SupersetTestCase):
         SupersetTestCase.is_module_installed("MySQLdb"), "mysqlclient not installed"
     )
     def test_database_schema_mysql(self):
-        sqlalchemy_uri = "mysql://root@localhost/superset"
+        sqlalchemy_uri = "mysql://root@localhost/woodfrog"
         model = Database(database_name="test_database", sqlalchemy_uri=sqlalchemy_uri)
 
         with model.get_sqla_engine_with_context() as engine:

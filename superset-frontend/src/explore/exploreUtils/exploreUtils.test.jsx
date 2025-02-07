@@ -60,7 +60,7 @@ describe('exploreUtils', () => {
         force: false,
         curUrl: 'http://superset.com',
       });
-      compareURI(URI(url), URI('/superset/explore_json/'));
+      compareURI(URI(url), URI('/woodfrog/explore_json/'));
     });
     it('generates proper json forced url', () => {
       const url = getExploreUrl({
@@ -71,7 +71,7 @@ describe('exploreUtils', () => {
       });
       compareURI(
         URI(url),
-        URI('/superset/explore_json/').search({ force: 'true' }),
+        URI('/woodfrog/explore_json/').search({ force: 'true' }),
       );
     });
     it('generates proper csv URL', () => {
@@ -83,7 +83,7 @@ describe('exploreUtils', () => {
       });
       compareURI(
         URI(url),
-        URI('/superset/explore_json/').search({ csv: 'true' }),
+        URI('/woodfrog/explore_json/').search({ csv: 'true' }),
       );
     });
     it('generates proper standalone URL', () => {
@@ -109,7 +109,7 @@ describe('exploreUtils', () => {
       });
       compareURI(
         URI(url),
-        URI('/superset/explore_json/').search({ foo: 'bar' }),
+        URI('/woodfrog/explore_json/').search({ foo: 'bar' }),
       );
     });
     it('generate proper save slice url', () => {
@@ -121,7 +121,7 @@ describe('exploreUtils', () => {
       });
       compareURI(
         URI(url),
-        URI('/superset/explore_json/').search({ foo: 'bar' }),
+        URI('/woodfrog/explore_json/').search({ foo: 'bar' }),
       );
     });
   });

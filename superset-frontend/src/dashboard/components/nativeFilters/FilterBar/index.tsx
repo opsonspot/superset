@@ -116,7 +116,7 @@ const publishDataMask = debounce(
     // keep react router history in sync with window history
     // replace params only when current page is /superset/dashboard
     // this prevents a race condition between updating filters and navigating to Explore
-    if (window.location.pathname.includes('/superset/dashboard')) {
+    if (window.location.pathname.includes('/woodfrog/dashboard')) {
       history.location.pathname = window.location.pathname;
       history.replace({
         search: newParams.toString(),
@@ -170,7 +170,7 @@ const FilterBar: React.FC<FiltersBarProps> = ({
           // filterState.value === undefined - means that value not initialized
           dataMask.filterState?.value !== undefined &&
           dataMaskSelectedRef.current[filter.id]?.filterState?.value ===
-            undefined &&
+          undefined &&
           filter.requiredFirst
         ) {
           dispatch(updateDataMask(filter.id, dataMask));

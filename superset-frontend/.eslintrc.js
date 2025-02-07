@@ -59,7 +59,7 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-        // resolve modules from `/superset_frontend/node_modules` and `/superset_frontend`
+        // resolve modules from `/woodfrog_frontend/node_modules` and `/woodfrog_frontend`
         moduleDirectory: ['node_modules', '.'],
       },
     },
