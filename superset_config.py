@@ -96,11 +96,10 @@ APP_ICON = "https://woodfrog.tech/logo_dark.png"
 FAVICONS=[{"href": "https://woodfrog.tech/favicon.ico"}]
 FEATURE_FLAGS = {"ALERT_REPORTS": True}
 ALERT_REPORTS_NOTIFICATION_DRY_RUN = True
-WEBDRIVER_BASEURL = "http://superset:8080/"
-PREFERRED_URL_SCHEME = 'http'
-# The base URL for the email report hyperlinks.
+WEBDRIVER_BASEURL = "http://superset:8080/woodfrog"
 WEBDRIVER_BASEURL_USER_FRIENDLY = WEBDRIVER_BASEURL
 SQLLAB_CTAS_NO_LIMIT = True
+# APPLICATION_ROOT = "/woodfrog"
 #
 # Optionally import superset_config_docker.py (which will have been included on
 # the PYTHONPATH) in order to allow for local settings to be overridden
@@ -115,10 +114,3 @@ try:
 except ImportError:
     logger.info("Using default Docker config...")
 
-PROXY_FIX_CONFIG = {
-    'x_for': 1,
-    'x_proto': 1,
-    'x_host': 1,
-    'x_port': 1,
-    'x_prefix': 1
-}

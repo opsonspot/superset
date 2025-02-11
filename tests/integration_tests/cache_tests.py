@@ -47,7 +47,7 @@ class TestCache(SupersetTestCase):
         cache_manager.init_app(app)
 
         slc = self.get_slice("Top 10 Girl Name Share")
-        json_endpoint = "/superset/explore_json/{}/{}/".format(
+        json_endpoint = "/woodfrog/explore_json/{}/{}/".format(
             slc.datasource_type, slc.datasource_id
         )
         resp = self.get_json_resp(
@@ -74,7 +74,7 @@ class TestCache(SupersetTestCase):
         cache_manager.init_app(app)
 
         slc = self.get_slice("Top 10 Girl Name Share")
-        json_endpoint = "/superset/explore_json/{}/{}/".format(
+        json_endpoint = "/woodfrog/explore_json/{}/{}/".format(
             slc.datasource_type, slc.datasource_id
         )
         resp = self.get_json_resp(

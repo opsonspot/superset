@@ -123,13 +123,13 @@ class TestCore(SupersetTestCase):
 
     def test_dashboard_endpoint(self):
         self.login()
-        resp = self.client.get("/superset/dashboard/-1/")
+        resp = self.client.get("/woodfrog/dashboard/-1/")
         assert resp.status_code == 404
 
     @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
     def test_slice_endpoint(self):
         self.login(username="admin")
-        resp = self.client.get("/superset/slice/-1/")
+        resp = self.client.get("/woodfrog/slice/-1/")
         assert resp.status_code == 404
 
     @pytest.mark.usefixtures("load_birth_names_dashboard_with_slices")
@@ -182,7 +182,7 @@ class TestCore(SupersetTestCase):
         new_slice_name = f"{copy_name_prefix}[overwrite]{random.random()}"
 
         url = (
-            "/superset/explore/table/{}/?slice_name={}&"
+            "/woodfrog/explore/table/{}/?slice_name={}&"
             "action={}&datasource_name=energy_usage"
         )
 
@@ -351,24 +351,24 @@ class TestCore(SupersetTestCase):
     def test_warm_up_cache(self):
         self.login()
         slc = self.get_slice("Top 10 Girl Name Share")
-        data = self.get_json_resp(f"/superset/warm_up_cache?slice_id={slc.id}")
+        data = self.get_json_resp(f"/woodfrog/warm_up_cache?slice_id={slc.id}")
         self.assertEqual(
             data, [{"slice_id": slc.id, "viz_error": None, "viz_status": "success"}]
         )
 
         data = self.get_json_resp(
-            "/superset/warm_up_cache?table_name=energy_usage&db_name=main"
+            "/woodfrog/warm_up_cache?table_name=energy_usage&db_name=main"
         )
         assert len(data) > 0
 
         dashboard = self.get_dash_by_slug("births")
 
         assert self.get_json_resp(
-            f"/superset/warm_up_cache?dashboard_id={dashboard.id}&slice_id={slc.id}"
+            f"/woodfrog/warm_up_cache?dashboard_id={dashboard.id}&slice_id={slc.id}"
         ) == [{"slice_id": slc.id, "viz_error": None, "viz_status": "success"}]
 
         assert self.get_json_resp(
-            f"/superset/warm_up_cache?dashboard_id={dashboard.id}&slice_id={slc.id}&extra_filters="
+            f"/woodfrog/warm_up_cache?dashboard_id={dashboard.id}&slice_id={slc.id}&extra_filters="
             + quote(json.dumps([{"col": "name", "op": "in", "val": ["Jennifer"]}]))
         ) == [{"slice_id": slc.id, "viz_error": None, "viz_status": "success"}]
 
@@ -387,7 +387,7 @@ class TestCore(SupersetTestCase):
                 )
             ),
         ):
-            assert self.get_json_resp(f"/superset/warm_up_cache?slice_id={slc.id}") == [
+            assert self.get_json_resp(f"/woodfrog/warm_up_cache?slice_id={slc.id}") == [
                 {
                     "slice_id": slc.id,
                     "viz_error": "Error: Empty query?",
@@ -401,7 +401,7 @@ class TestCore(SupersetTestCase):
         store_cache_keys = app.config["STORE_CACHE_KEYS_IN_METADATA_DB"]
         app.config["STORE_CACHE_KEYS_IN_METADATA_DB"] = True
         slc = self.get_slice("Top 10 Girl Name Share")
-        self.get_json_resp(f"/superset/warm_up_cache?slice_id={slc.id}")
+        self.get_json_resp(f"/woodfrog/warm_up_cache?slice_id={slc.id}")
         ck = db.session.query(CacheKey).order_by(CacheKey.id.desc()).first()
         assert ck.datasource_uid == f"{slc.table.id}__table"
         db.session.delete(ck)
@@ -452,7 +452,7 @@ class TestCore(SupersetTestCase):
 
     def test_fetch_datasource_metadata(self):
         self.login(username="admin")
-        url = "/superset/fetch_datasource_metadata?" "datasourceKey=1__table"
+        url = "/woodfrog/fetch_datasource_metadata?" "datasourceKey=1__table"
         resp = self.get_json_resp(url)
         keys = [
             "name",
@@ -547,7 +547,7 @@ class TestCore(SupersetTestCase):
         }
         self.login(username="admin")
         rv = self.client.post(
-            "/superset/explore_json/",
+            "/woodfrog/explore_json/",
             data={"form_data": json.dumps(form_data)},
         )
         data = json.loads(rv.data.decode("utf-8"))
@@ -572,7 +572,7 @@ class TestCore(SupersetTestCase):
         }
         self.login(username="admin")
         rv = self.client.post(
-            "/superset/explore_json/",
+            "/woodfrog/explore_json/",
             data={"form_data": json.dumps(form_data)},
         )
         data = json.loads(rv.data.decode("utf-8"))
@@ -648,7 +648,7 @@ class TestCore(SupersetTestCase):
 
         self.login(username="admin")
         rv = self.client.post(
-            "/superset/explore_json/",
+            "/woodfrog/explore_json/",
             data={"form_data": json.dumps(form_data)},
         )
         data = json.loads(rv.data.decode("utf-8"))
@@ -697,7 +697,7 @@ class TestCore(SupersetTestCase):
         async_query_manager_factory.init_app(app)
         self.login(username="admin")
         rv = self.client.post(
-            "/superset/explore_json/",
+            "/woodfrog/explore_json/",
             data={"form_data": json.dumps(form_data)},
         )
         data = json.loads(rv.data.decode("utf-8"))
@@ -736,7 +736,7 @@ class TestCore(SupersetTestCase):
         async_query_manager_factory.init_app(app)
         self.login(username="admin")
         rv = self.client.post(
-            "/superset/explore_json/?results=true",
+            "/woodfrog/explore_json/?results=true",
             data={"form_data": json.dumps(form_data)},
         )
         self.assertEqual(rv.status_code, 200)
@@ -775,7 +775,7 @@ class TestCore(SupersetTestCase):
         mock_force_cached.return_value = False
 
         self.login(username="admin")
-        rv = self.client.get("/superset/explore_json/data/valid-cache-key")
+        rv = self.client.get("/woodfrog/explore_json/data/valid-cache-key")
         data = json.loads(rv.data.decode("utf-8"))
 
         self.assertEqual(rv.status_code, 200)
@@ -811,13 +811,13 @@ class TestCore(SupersetTestCase):
 
         mock_cache.return_value = MockCache()
 
-        rv = self.client.get("/superset/explore_json/data/valid-cache-key")
+        rv = self.client.get("/woodfrog/explore_json/data/valid-cache-key")
         self.assertEqual(rv.status_code, 401)
 
     def test_explore_json_data_invalid_cache_key(self):
         self.login(username="admin")
         cache_key = "invalid-cache-key"
-        rv = self.client.get(f"/superset/explore_json/data/{cache_key}")
+        rv = self.client.get(f"/woodfrog/explore_json/data/{cache_key}")
         data = json.loads(rv.data.decode("utf-8"))
 
         self.assertEqual(rv.status_code, 404)
@@ -952,8 +952,8 @@ class TestCore(SupersetTestCase):
         dash_id = db.session.query(Dashboard.id).first()[0]
         tbl_id = self.table_ids.get("wb_health_population")
         urls = [
-            "/superset/welcome",
-            f"/superset/dashboard/{dash_id}/",
+            "/woodfrog/welcome",
+            f"/woodfrog/dashboard/{dash_id}/",
             f"/explore/?datasource_type=table&datasource_id={tbl_id}",
         ]
         for url in urls:
@@ -1143,7 +1143,7 @@ class TestCore(SupersetTestCase):
         exception = SupersetException("Error message")
         mock_db_connection_mutator.side_effect = exception
         dash = db.session.query(Dashboard).first()
-        url = f"/superset/dashboard/{dash.id}/"
+        url = f"/woodfrog/dashboard/{dash.id}/"
 
         self.login()
         data = self.get_resp(url)
@@ -1153,7 +1153,7 @@ class TestCore(SupersetTestCase):
         exception = SQLAlchemyError("Error message")
         mock_db_connection_mutator.side_effect = exception
         dash = db.session.query(Dashboard).first()
-        url = f"/superset/dashboard/{dash.id}/"
+        url = f"/woodfrog/dashboard/{dash.id}/"
 
         self.login()
         data = self.get_resp(url)
@@ -1169,7 +1169,7 @@ class TestCore(SupersetTestCase):
         slice_id = self.get_slice(slice_name).id
         form_data = {"slice_id": slice_id, "viz_type": "line", "datasource": "1__table"}
         rv = self.client.get(
-            f"/superset/explore/?form_data={quote(json.dumps(form_data))}"
+            f"/woodfrog/explore/?form_data={quote(json.dumps(form_data))}"
         )
         self.assertEqual(
             rv.headers["Location"], f"/explore/?form_data_key={random_key}"
@@ -1195,7 +1195,7 @@ class TestCore(SupersetTestCase):
         self.login()
         resp = self.client.get("superset/dashboard/p/123/")
 
-        expected_url = "/superset/dashboard/1?permalink_key=123&standalone=3"
+        expected_url = "/woodfrog/dashboard/1?permalink_key=123&standalone=3"
 
         self.assertEqual(resp.headers["Location"], expected_url)
         assert resp.status_code == 302

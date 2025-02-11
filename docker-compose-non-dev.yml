@@ -80,6 +80,8 @@ services:
       args:
         DOCKER_BUILDKIT: 1
     container_name: superset_app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "8080:8088"
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]

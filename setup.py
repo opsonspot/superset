@@ -122,7 +122,7 @@ setup(
         "shillelagh[gsheetsapi]>=1.2.10, <2.0",
         "shortid",
         "sshtunnel>=0.4.0, <0.5",
-        "simplejson>=3.15.0",
+        "simplejson>=3.17.0",
         "slack_sdk>=3.19.0, <4",
         "sqlalchemy>=1.4, <2",
         "sqlalchemy-utils>=0.38.3, <0.39",

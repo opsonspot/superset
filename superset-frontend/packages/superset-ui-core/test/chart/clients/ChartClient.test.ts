@@ -172,7 +172,7 @@ describe('ChartClient', () => {
         Promise.reject(new Error('Unexpected all to v1 API')),
       );
 
-      fetchMock.post('glob:*/superset/explore_json/', {
+      fetchMock.post('glob:*/woodfrog/explore_json/', {
         field1: 'abc',
         field2: 'def',
       });
@@ -195,7 +195,7 @@ describe('ChartClient', () => {
   describe('.loadDatasource(datasourceKey, options)', () => {
     it('fetches datasource', () => {
       fetchMock.get(
-        'glob:*/superset/fetch_datasource_metadata?datasourceKey=1__table',
+        'glob:*/woodfrog/fetch_datasource_metadata?datasourceKey=1__table',
         {
           field1: 'abc',
           field2: 'def',
@@ -261,7 +261,7 @@ describe('ChartClient', () => {
       });
 
       fetchMock.get(
-        'glob:*/superset/fetch_datasource_metadata?datasourceKey=1__table',
+        'glob:*/woodfrog/fetch_datasource_metadata?datasourceKey=1__table',
         {
           name: 'transactions',
           schema: 'staging',

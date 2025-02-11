@@ -18,8 +18,8 @@
  */
 describe('Advanced analytics', () => {
   beforeEach(() => {
-    cy.intercept('POST', '/superset/explore_json/**').as('postJson');
-    cy.intercept('GET', '/superset/explore_json/**').as('getJson');
+    cy.intercept('POST', '/woodfrog/explore_json/**').as('postJson');
+    cy.intercept('GET', '/woodfrog/explore_json/**').as('getJson');
     cy.intercept('PUT', '/api/v1/explore/**').as('putExplore');
     cy.intercept('GET', '/explore/**').as('getExplore');
   });

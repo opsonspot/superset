@@ -265,7 +265,7 @@ test('Should render title', () => {
 test('Should render click to edit prompt and run onExploreChart on click', async () => {
   const props = createProps();
   const history = createMemoryHistory({
-    initialEntries: ['/superset/dashboard/1/'],
+    initialEntries: ['/woodfrog/dashboard/1/'],
   });
   render(
     <Router history={history}>
@@ -301,7 +301,7 @@ test('Display cmd button in tooltip if running on MacOS', async () => {
 test('Should not render click to edit prompt and run onExploreChart on click if supersetCanExplore=false', () => {
   const props = createProps({ supersetCanExplore: false });
   const history = createMemoryHistory({
-    initialEntries: ['/superset/dashboard/1/'],
+    initialEntries: ['/woodfrog/dashboard/1/'],
   });
   render(
     <Router history={history}>
@@ -317,13 +317,13 @@ test('Should not render click to edit prompt and run onExploreChart on click if 
   ).not.toBeInTheDocument();
 
   userEvent.click(screen.getByText('Vaccine Candidates per Phase'));
-  expect(history.location.pathname).toMatch('/superset/dashboard');
+  expect(history.location.pathname).toMatch('/woodfrog/dashboard');
 });
 
 test('Should not render click to edit prompt and run onExploreChart on click if in edit mode', () => {
   const props = createProps({ editMode: true });
   const history = createMemoryHistory({
-    initialEntries: ['/superset/dashboard/1/'],
+    initialEntries: ['/woodfrog/dashboard/1/'],
   });
   render(
     <Router history={history}>
@@ -339,7 +339,7 @@ test('Should not render click to edit prompt and run onExploreChart on click if 
   ).not.toBeInTheDocument();
 
   userEvent.click(screen.getByText('Vaccine Candidates per Phase'));
-  expect(history.location.pathname).toMatch('/superset/dashboard');
+  expect(history.location.pathname).toMatch('/woodfrog/dashboard');
 });
 
 test('Should render "annotationsLoading"', () => {
