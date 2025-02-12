@@ -28,14 +28,14 @@ export enum DatasourcesAction {
 
 export type DatasourcesActionPayload =
   | {
-    type: DatasourcesAction.SetDatasources;
-    datasources: Datasource[] | null;
-  }
+      type: DatasourcesAction.SetDatasources;
+      datasources: Datasource[] | null;
+    }
   | {
-    type: DatasourcesAction.SetDatasource;
-    key: Datasource['uid'];
-    datasource: Datasource;
-  };
+      type: DatasourcesAction.SetDatasource;
+      key: Datasource['uid'];
+      datasource: Datasource;
+    };
 
 export function setDatasources(datasources: Datasource[] | null) {
   return {
