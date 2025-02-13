@@ -1,0 +1,1 @@
+scp -i woodfrog4.1.1.pem superset-plugin-chart-stacked-group-0.1.0.tgz ubuntu@23.23.204.124:/home/ubuntu/superset/superset-frontend/
