@@ -170,7 +170,7 @@ const FilterBar: React.FC<FiltersBarProps> = ({
           // filterState.value === undefined - means that value not initialized
           dataMask.filterState?.value !== undefined &&
           dataMaskSelectedRef.current[filter.id]?.filterState?.value ===
-            undefined &&
+          undefined &&
           filter.requiredFirst
         ) {
           dispatch(updateDataMask(filter.id, dataMask));

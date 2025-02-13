@@ -110,8 +110,8 @@ export function saveFaveStar(id, isStarred) {
     const endpoint = `/api/v1/dashboard/${id}/favorites/`;
     const apiCall = isStarred
       ? SupersetClient.delete({
-          endpoint,
-        })
+        endpoint,
+      })
       : SupersetClient.post({ endpoint });
 
     return apiCall
@@ -380,21 +380,21 @@ export function saveDashboardRequest(data, id, saveType) {
         saveType === SAVE_TYPE_OVERWRITE_CONFIRMED
           ? data
           : {
-              certified_by: cleanedData.certified_by,
-              certification_details: cleanedData.certification_details,
-              css: cleanedData.css,
-              dashboard_title: cleanedData.dashboard_title,
-              slug: cleanedData.slug,
-              owners: cleanedData.owners,
-              roles: cleanedData.roles,
-              json_metadata: safeStringify({
-                ...(cleanedData?.metadata || {}),
-                default_filters: safeStringify(serializedFilters),
-                filter_scopes: serializedFilterScopes,
-                chart_configuration: chartConfiguration,
-                global_chart_configuration: globalChartConfiguration,
-              }),
-            };
+            certified_by: cleanedData.certified_by,
+            certification_details: cleanedData.certification_details,
+            css: cleanedData.css,
+            dashboard_title: cleanedData.dashboard_title,
+            slug: cleanedData.slug,
+            owners: cleanedData.owners,
+            roles: cleanedData.roles,
+            json_metadata: safeStringify({
+              ...(cleanedData?.metadata || {}),
+              default_filters: safeStringify(serializedFilters),
+              filter_scopes: serializedFilterScopes,
+              chart_configuration: chartConfiguration,
+              global_chart_configuration: globalChartConfiguration,
+            }),
+          };
 
       const updateDashboard = () =>
         SupersetClient.put({
